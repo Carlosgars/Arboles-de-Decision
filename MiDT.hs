@@ -1,3 +1,5 @@
+module MiDT where
+
 import Data.List (nub, maximumBy)
 import Data.Function (on)
 import Data.Tree
@@ -32,9 +34,10 @@ import Data.Tree
 -- Necesitamos implementar:
 -- Entropía del conjunto de ejemplos dado el atributo objetivo.
 -- Ganancia de información dado un conjunto de ejemplos, el atributo objetivo, el atributo que separa los ejemplos.
---
 
--- TIPOS y DATOS --
+------------
+-- TIPOS  --
+------------
 
 type Ejemplo a b = ([(Atributo a,a)],(Atributo b,b))
 
@@ -54,7 +57,6 @@ instance (Show a, Show b) => Show (Arbol a b) where
     show x = showTree x ""
 
 
--- 
 etiqueta :: Ejemplo a b -> b
 etiqueta = snd.snd
 
@@ -66,8 +68,9 @@ showTree (Hoja x) = shows x
 showTree (Nodo atrib hijo) = ('<':).shows atrib.("|\n"++).showList [hijo a | a <- posiblesvalores atrib].('>':)
 
 
-
+--------------
 -- EJEMPLOS --
+--------------
 
 ejemplo1 = ([(altura,"alto"),(peso,"ligero")],(sexo,"hombre")) :: Ejemplo String String
 ejemplo2 = ([(altura,"medio"),(peso,"pesado")],(sexo,"hombre")) :: Ejemplo String String
@@ -100,6 +103,10 @@ atributos = [altura,peso] :: [Atributo String]
 
 --arbol = Nodo altura :: Arbol
 
+-------------------
+-- ALGORITMO ID3 --
+-------------------
+
 id3 ::  [Atributo a] -> [Ejemplo a b] -> Arbol a b
 id3 atributos ejemplos  = undefined
 --    if fst (homogeneo ejemplos) then Hoja (snd (homogeneo ejemplos))
@@ -110,9 +117,13 @@ id3 atributos ejemplos  = undefined
 --        mejor_atributo = mejor_clasifica ejemplos
 --        particion = dividir ejemplos mejor_atributo
 --        hijos = map (id3 atributos) particion
-        
-        
--- Funciones necesarias para id3
+
+
+------------------------
+-- Funciones para ID3 --
+------------------------
+
+-- comprobar si lista de ejemplos es homogénea.
 homogeneo :: (Eq b) => [Ejemplo a b] -> (Bool, b)
 homogeneo ejemplos = 
           if all (== head etiqueta_ejemplos) (tail etiqueta_ejemplos)
@@ -120,7 +131,7 @@ homogeneo ejemplos =
           else (False,head etiqueta_ejemplos)
           where etiqueta_ejemplos = map etiqueta ejemplos
 
--- problema cuando dos clasificaciones tienen el mismo numero de ejemplos 
+-- Devolver etiqueta mas comun en lista de ejemplos. Problema: dos clasificaciones tienen el mismo numero de ejemplos.
 mas_comun :: (Eq b) => [Ejemplo a b] -> b
 mas_comun ejemplos = mas_comun_aux (map snd (map snd ejemplos)) ((posiblesvalores.fst.snd.head) ejemplos)
 
@@ -135,10 +146,11 @@ ocurrencia :: (Eq a) => a -> [a] -> Int
 ocurrencia a [] = 0
 ocurrencia a (x:xs) = if a == x then 1 + ocurrencia a xs else ocurrencia a xs
 
+-- Encontrar atributo que mejor clasifica una lista de ejemplos.
 mejor_clasifica :: [Atributo a] -> [Ejemplo a b] -> Atributo a
 mejor_clasifica atributos ejemplos = undefined
 
-
+-- Entropia de una lista de ejemplos.
 entropia :: (Eq b) => [Ejemplo a b] -> Double
 entropia ejemplos = entropiaaux ejemplos ((posiblesvalores.atributoObjetivo.head) ejemplos) 0
 
@@ -149,7 +161,7 @@ entropiaaux ejemplos (c:posiblesval) ac =
             entropiaaux ejemplos posiblesval (ac - p * (logBase (fromIntegral 2)  p))
             
 
-
+-- Dividir lista de ejemplos al evaluar un atributo dado.
 dividir :: (Eq a) => [Ejemplo a b] -> Atributo a -> [[Ejemplo a b]]
 dividir ejemplos atributo = dividirac ejemplos pos (posiblesvalores atributo)
         where pos = posicion atributo (head ejemplos)
@@ -162,15 +174,14 @@ dividirac ejemplos pos (c:posiblesvalores) = (dividiraux ejemplos pos c):(dividi
 dividiraux :: (Eq a) => [Ejemplo a b] -> Int -> a -> [Ejemplo a b]
 dividiraux ejemplos pos valor =  [ x | x <- ejemplos, snd ((fst x)!!pos) == valor ]
 
---filter ((==valor).(map snd).map (!!pos).(map fst)) ejemplos
-
+"""filter ((==valor).(map snd).map (!!pos).(map fst)) ejemplos"""
 
 """
 posicion :: (Eq a) => Atributo a -> Ejemplo a b -> Int
 posicion atributo ejemplo = head [y | (y,z) <- zip [0..] ej, z==atributo]
          where ej = map fst (fst ejemplo)
 
-
+- Ganancia de informacion de una lista de ejemplos respecto a la evaluacion de un atributo.
 gananciadeinformacion :: [Ejemplo a b] -> Atributo a -> Double
 gananciadeinformacion ejemplos atributo =
                       (map (/ns) (map (fromIntegral.length) ej_v))

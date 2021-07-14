@@ -1,13 +1,12 @@
+-- Trying to show trees... 
 
-module ProjectDtrees where
+module ShowTrees where
 
 import Data.Maybe (fromJust)
 import Data.List 
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Function (on)
-
-
 
 
 data Atributo a =
@@ -23,8 +22,6 @@ type Etiquetado a b = (b,Instancia a)
 data Arbol a b =
      Nodo {att :: Atributo a, hijo :: a -> (Arbol a b)}
      | Hoja b
-     
-
 
 instance (Show a,Show b) => Show (Arbol a b) where
          show d = showArbol d
@@ -37,8 +34,6 @@ showArbol (Nodo att hijo) =
 
 verArbol :: (Show a, Show b) => (Arbol a b) -> IO ()
 verArbol a = putStrLn $ show a
-
-
 
 indent :: Int -> String -> String
 indent d = (replicate d ' ' ++)
