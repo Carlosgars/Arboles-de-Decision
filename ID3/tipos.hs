@@ -13,7 +13,6 @@ instance Show (Atributo a) where
 data Arbol a b = Hoja b
      | Nodo { atrib::Atributo a, hijo::a -> (Arbol a b) }
 
-
 instance (Show a, Show b) => Show (Arbol a b) where
      show x = showTree x ""
 

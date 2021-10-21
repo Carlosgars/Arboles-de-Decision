@@ -15,3 +15,4 @@ entropiaaux ejemplos (c:posiblesvalores) ac =
             if p > 0
             then entropiaaux ejemplos posiblesvalores (ac - p * (logBase (fromIntegral 2)  p))
             else entropiaaux ejemplos posiblesvalores ac
+
