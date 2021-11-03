@@ -1,8 +1,13 @@
 module AuxC45 where
 
-import TiposDiversos
+import TiposC45
 import GananciaNormalizada
 import DiscretizarContinuo
+import UtilsC45
+import EjemplosC45
+import Data.Either
+
+
 
 -- Comprobar si una lista de ejemplos es homogénea.
 
@@ -18,7 +23,7 @@ homogeneo ejemplos =
 
 mascomun :: [Ejemplo] -> String
 mascomun ejemplos =
-          mascomunaux (getDiscreto $ map snd $ map snd ejemplos) ((posiblesvalores.getL.atributoObjetivo.head) ejemplos)
+          mascomunaux (lefts $ map snd $ map snd ejemplos) ((posiblesvalores.getL.atributoObjetivo.head) ejemplos)
 
 mascomunaux :: [String] -> [String] -> String
 mascomunaux ejemplos posiblesval =
@@ -33,8 +38,8 @@ mejorclasifica atributos ejemplos = mcaux (tail atributos) ejemplos (head atribu
 mcaux ::  [Atributo] -> [Ejemplo] -> Atributo -> Atributo 
 mcaux [] ejemplos ac = ac
 mcaux (atributo:atributos) ejemplos ac =
-       let g_current = ganInfo ejemplos ac
-           g_next = ganInfo ejemplos atributo
+       let g_current = ganInfoNorm ejemplos ac
+           g_next = ganInfoNorm ejemplos atributo
        in
        if g_next > g_current
        then mcaux atributos ejemplos atributo
