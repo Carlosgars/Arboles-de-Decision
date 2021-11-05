@@ -7,6 +7,7 @@ import DiscretizarContinuo
 import UtilsC45
 import GananciaNormalizada
 import EjemplosC45
+import EjemplosLluviaC45
 
 c45 :: [Atributo] -> [Ejemplo] -> Arbol
 c45 atributos ejemplos =
@@ -16,7 +17,7 @@ c45 atributos ejemplos =
     in
     if fst (homogeneo ejemplos)
     then Hoja (snd (homogeneo ejemplos))
-    else Nodo mejoratributo (creahijo new_atributos (evaluar ejemplos mejoratributo) )
+    else Nodo mejoratributo (creahijo new_atributos (evaluar ejemplos mejoratributo))
 
 
 creahijo :: [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
