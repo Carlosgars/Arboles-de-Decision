@@ -26,32 +26,21 @@ rmdups :: (Ord a) => [a] -> [a]
 rmdups = map head . group . sort
 
 maximo :: [(b,Int)] -> (b,Int) -> b
-maximo [] y = fst y
-maximo (x:xs) y = if (snd x) > (snd y) then maximo xs x else maximo xs y
+maximo [] y                   = fst y
+maximo (x:xs) y 
+           | (snd x) > (snd y) = maximo xs x
+           | otherwise         = maximo xs y
 
 ocurrencia :: (Eq a) => a -> [a] -> Int
-ocurrencia a [] = 0
-ocurrencia a (x:xs) = if a == x then 1 + ocurrencia a xs else ocurrencia a xs
+ocurrencia a []     = 0
+ocurrencia a (x:xs) 
+           | a == x    = 1 + ocurrencia a xs
+           | otherwise = ocurrencia a xs
 
 
 elimina _ []                 = []
 elimina x (y:ys) | x == y    = elimina x ys
-                    | otherwise = y : elimina x ys
-
-entropia :: [Ejemplo] -> Double
-entropia [] = 0
-entropia ejemplos =
-         entropiaaux ejemplos (posiblesvalores $ getL $ atributoObjetivo $ head ejemplos) 0
-
-entropiaaux :: [Ejemplo] -> [String] -> Double -> Double
-entropiaaux ejemplos [] ac = ac
-entropiaaux ejemplos (c:posiblesvalores) ac =
-            let p = (fromIntegral (ocurrencia c (map (getL.snd.snd) ejemplos))) / (fromIntegral (length ejemplos))
-            in
-            if p > 0
-            then
-            entropiaaux ejemplos posiblesvalores (ac - p * (logBase (fromIntegral 2)  p))
-            else entropiaaux ejemplos posiblesvalores 0
+                   | otherwise = y : elimina x ys
 
 
 evaluarDiscreto :: [Ejemplo] -> String -> Discreto -> [Ejemplo]
@@ -60,13 +49,15 @@ evaluarDiscreto ejemplos valor atributo =
            in [x | x <- ejemplos, (getL $ valorAtributo x atrib) == valor ]
 
 evaluarContinuo :: [Ejemplo] -> String -> Continuo -> [Ejemplo]
-evaluarContinuo ejemplos "<=" atributo =
+evaluarContinuo ejemplos valor atributo =
            let u = fromJust $ umbral atributo
-           in [ x | x <- ejemplos, (getR $ valorAtributo x (Right atributo)) <= u ]
-evaluarContinuo ejemplos ">" atributo =
-           let u = fromJust $ umbral atributo
-           in [ x | x <- ejemplos, (getR $ valorAtributo x (Right atributo)) > u ]
-evaluarContinuo ejemplos _ atributo = ejemplos
+               atrib = (Right atributo)
+           in
+           if valor == "<="
+           then [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= u ]
+           else if valor == ">"
+           then [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > u ]
+           else ejemplos
 
 -- either :: (Discreto -> [Ejemplo]) -> (Continuo -> [Ejemplo]) -> Atributo -> [Ejemplo]
 
@@ -78,4 +69,5 @@ evaluar ejemplos atributo valor =
 valorAtributo :: Ejemplo -> Atributo -> ValorAtrib
 valorAtributo ejemplo atributo =
        snd $ head (filter (\x -> fst x == atributo) (fst ejemplo))
+
 

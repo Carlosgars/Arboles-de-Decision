@@ -11,7 +11,7 @@ import EjemplosC45
 c45 :: [Atributo] -> [Ejemplo] -> Arbol
 c45 atributos ejemplos =
     let discretizados = map (discretizar ejemplos) atributos
-        mejoratributo = mejorclasifica discretizados ejemplos
+        mejoratributo = mejorclasifica2 discretizados ejemplos
         new_atributos = elimina mejoratributo atributos
     in
     if fst (homogeneo ejemplos)
