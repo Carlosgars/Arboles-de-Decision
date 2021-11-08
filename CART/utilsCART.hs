@@ -1,9 +1,12 @@
-module UtilsC45 where
+module UtilsCART where
 
-import TiposC45
+import TiposCART
 import Data.List
 import Data.Maybe
-import EjemplosC45
+--import EjemplosCART
+
+lengthDouble :: [a] -> Double
+lengthDouble = fromIntegral.length
 
 getL :: Either a b -> a
 getL (Left x) = x

@@ -1,12 +1,12 @@
 module DiscretizarContinuo where
 
-import TiposC45
+import TiposCART
 import Data.Either
 import Data.List
-import UtilsC45
+import UtilsCART
 import Data.Maybe
-import GananciaNormalizada
-import EjemplosC45
+import Gini
+import EjemplosCART
 
 posiblesParticiones :: Continuo -> [Double] -> [Double]
 posiblesParticiones atributo valores =
@@ -34,5 +34,4 @@ mejorumbralAux atributo ejemplos (u:us) umbral gan =
         in if new_gan > gan
         then mejorumbralAux atributo ejemplos us u new_gan
         else mejorumbralAux atributo ejemplos us umbral gan
-
 

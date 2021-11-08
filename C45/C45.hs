@@ -16,7 +16,7 @@ c45 comunpadre _ [] = Hoja comunpadre
 c45 _ [] ejemplos = Hoja (mascomun ejemplos)
 c45 comunpadre atributos ejemplos =
     let discretizados = map (discretizar ejemplos) atributos
-        mejoratributo = mejorclasifica2 discretizados ejemplos
+        mejoratributo = mejorclasifica discretizados ejemplos
         new_atributos = elimina mejoratributo atributos
         posiblehoja = parada 0.75 ejemplos
         comunpadre = mascomun ejemplos
@@ -30,3 +30,6 @@ creahijo :: String -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
 creahijo comunpadre atributos mejorclasificasegunvalor valor =
          let ejemplos = mejorclasificasegunvalor valor
          in c45 comunpadre atributos ejemplos
+
+
+ranc45 = runc45 atributosLluvia ejemplosLluviaC45

@@ -1,12 +1,12 @@
-module AuxC45 where
+module AuxCART where
 
-import TiposC45
+import TiposCART
 import GananciaNormalizada
 import DiscretizarContinuo
-import UtilsC45
-import EjemplosC45
+import UtilsCART
+import EjemplosCART
 import Data.Either
-import EjemplosLluviaC45
+import EjemplosLluviaCART
 
 -- Encontrar atributo que mejor clasifica una lista de ejemplos.
 
@@ -40,24 +40,25 @@ mejorclasificaaux (atributo:atributos) ejemplos ac gan =
 
 -- Comprobar si una lista de ejemplos es homogénea.
 
-homogeneo :: [Ejemplo] -> (Bool, String)
+homogeneo :: [Ejemplo] -> (Bool, ValorAtrib)
 homogeneo [] = (False, "Vacío")
 homogeneo ejemplos =
           let clasificaciones = map clasificacion ejemplos
               hoja = head clasificaciones
           in if all (== hoja) (tail clasificaciones)
-          then (True, getL hoja)
-          else (False, getL hoja)
+          then (True, hoja)
+          else (False, hoja)
+
 
 
 -- Devolver etiqueta más común en lista de ejemplos.
 -- Problema: dos clasificaciones que tengan el mismo número de ejemplos.
 
-mascomun :: [Ejemplo] -> String
-mascomun [] = "Aqui esta el error: mascomun de lista vacia"
+mascomun :: [Ejemplo] -> ValorAtrib
+mascomun [] = Left "Aqui esta el error: mascomun de lista vacia"
 mascomun ejemplos =
          let valores_clasificacion = (posiblesval.atributoObjetivo.head) ejemplos
-             clasificaciones = map (getL.clasificacion) ejemplos
+             clasificaciones = map (clasificacion) ejemplos
          in maximo [ (x,ocurrencia x clasificaciones) | x <- valores_clasificacion ] (head clasificaciones,0)
 
 
