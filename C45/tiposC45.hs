@@ -52,7 +52,7 @@ instance Show Arbol where
 
 showTree :: Arbol -> ShowS
 showTree (Hoja x) = shows x
-showTree (Nodo atrib hijo) = ('<':).shows atrib.("|\n"++).showList [hijo a | a <- posiblesval atrib].('>':)
+showTree (Nodo atrib hijo) = ('<':).shows atrib.("|\n"++).showList [(hijo a,a) | a <- posiblesval atrib].('>':)
 
 
 

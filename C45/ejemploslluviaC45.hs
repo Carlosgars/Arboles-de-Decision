@@ -16,7 +16,7 @@ rains = D { dnombre ="rains", posiblesvalores=["yes","no"]}
 atributosLluvia = [Left outlook,Right temperature,Left humidity,Left windy]
 clasificacionLluvia = Left rains
 
-labels = ["no","no","yes","yes","yes","no","yes","no","yes","yes","yes","yes","yes","no"]
+labels = ["no","no","no","yes","yes","no","yes","no","yes","yes","yes","yes","yes","no"]
 
 correctlabels = [ aleft (rains,x) | x <- labels ]
 

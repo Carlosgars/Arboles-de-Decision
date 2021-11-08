@@ -57,10 +57,26 @@ s_sunny = evaluar s mejorat1  "sunny"
 s_overcast = evaluar s mejorat1  "overcast"
 s_rainy = evaluar s mejorat1  "rainy"
 
+s_high = evaluar s mejorat1  "high"
+s_normal = evaluar s mejorat1  "normal"
+
+a2 = elimina mejorat1 discr1
+
+discr2 = map (discretizar s_high) a2
+
+mejorat2high = mejorclasifica2 discr2 s_high
+s_high_sunny = evaluar s_high mejorat2high  "sunny"
+s_high_overcast = evaluar s_high mejorat2high  "overcast"
+s_high_rainy = evaluar s_high mejorat2high  "rainy"
+
+mejorat2normal = mejorclasifica2 discr2 s_normal
+s_normal_true = evaluar s_normal mejorat2normal  "true"
+s_normal_false = evaluar s_normal mejorat2normal  "false"
+
 e1 = map entropia [s_sunny,s_overcast,s_rainy]
 
 -- Segunda iteracion
-a2 =  elimina mejoratributo2 discr1
+
 
 -- rama "sunny"
 discrsunny = map (discretizar s_sunny) a2
@@ -81,3 +97,26 @@ mejor2rainy = mejorclasifica2 discrrainy s_rainy
 --ejemplosaltomenor = evaluar ejemplosalto (Right peso)  "<="
 --ejemplosaltomayor = evaluar ejemplosalto (Right peso)  ">"
 
+-- <Left outlook|
+-- [<Left humidity|
+-- ["no","yes"]>,"yes",<Left windy|
+-- ["no","yes"]>]>
+
+
+--- Rama High -> Overcast
+at3 = [Right temperature,Left windy]
+discr3 = map (discretizar s_high_overcast2) at3 --Temperature Just 13.5
+s_high_overcast2 = evaluar s_high mejorat2high "overcast"
+mejorclasifica_s_high_overcast2 = mejorclasifica2 discr3 s_high_overcast2
+lista_ganancias = (ganancias discr3 s_high_overcast2) -- ganancia temperature = NaN
+
+ganancia_temperatura = ganancianorm s_high_overcast2 (head discr3)
+
+ramamenor = evaluar s_high_overcast2 (head discr3) "<="
+ramamayor = evaluar s_high_overcast2 (head discr3) ">"
+
+atribtemp = (head discr3)
+ejemp = s_high_overcast2
+
+s1 = [ x | x <- ejemp, (getR $ valorAtributo x atribtemp) <= 13.5 ]
+s2 = [ x | x <- ejemp, (getR $ valorAtributo x atribtemp) > 13.5 ]

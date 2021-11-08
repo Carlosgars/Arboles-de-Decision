@@ -9,18 +9,24 @@ import GananciaNormalizada
 import EjemplosC45
 import EjemplosLluviaC45
 
-c45 :: [Atributo] -> [Ejemplo] -> Arbol
-c45 atributos ejemplos =
+runc45 = c45 "error: Ejemplos vacio."
+
+c45 :: String -> [Atributo] -> [Ejemplo] -> Arbol
+c45 comunpadre _ [] = Hoja comunpadre
+c45 _ [] ejemplos = Hoja (mascomun ejemplos)
+c45 comunpadre atributos ejemplos =
     let discretizados = map (discretizar ejemplos) atributos
         mejoratributo = mejorclasifica2 discretizados ejemplos
         new_atributos = elimina mejoratributo atributos
+        posiblehoja = parada 0.75 ejemplos
+        comunpadre = mascomun ejemplos
     in
-    if fst (homogeneo ejemplos)
-    then Hoja (snd (homogeneo ejemplos))
-    else Nodo mejoratributo (creahijo new_atributos (evaluar ejemplos mejoratributo))
+    if fst posiblehoja
+    then Hoja (snd posiblehoja)
+    else Nodo mejoratributo (creahijo comunpadre new_atributos (evaluar ejemplos mejoratributo))
 
 
-creahijo :: [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
-creahijo atributos mejorclasificasegunvalor valor =
+creahijo :: String -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
+creahijo comunpadre atributos mejorclasificasegunvalor valor =
          let ejemplos = mejorclasificasegunvalor valor
-         in c45 atributos ejemplos
+         in c45 comunpadre atributos ejemplos
