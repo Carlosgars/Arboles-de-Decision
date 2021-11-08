@@ -34,11 +34,11 @@ maximo (x:xs) y
            | (snd x) > (snd y) = maximo xs x
            | otherwise         = maximo xs y
 
-ocurrencia :: (Eq a) => a -> [a] -> Int
-ocurrencia a []     = 0
-ocurrencia a (x:xs) 
-           | a == x    = 1 + ocurrencia a xs
-           | otherwise = ocurrencia a xs
+ocurrencia :: (Eq a) => [a] -> a -> Int
+ocurrencia [] a      = 0
+ocurrencia (x:xs) a
+           | a == x    = 1 + ocurrencia xs a
+           | otherwise = ocurrencia xs a
 
 
 elimina _ []                 = []

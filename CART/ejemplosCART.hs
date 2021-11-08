@@ -20,9 +20,13 @@ prob_rains = C { cnombre ="prob_rains", rango=(0,100), umbral=Nothing}
 atLluviaCART = [Right outlookC, Right temperature, Left humidityC, Left windyC]
 clasificacionLluvia = Right prob_rains
 
-labels = [15.0,23.0,26.0,77.0,65.0,5.0,95.0,30.0,70.0,86.0,75.0,19.0,99.0,1.0] :: [Double]
+labelsC = [15.0,23.0,26.0,77.0,65.0,5.0,95.0,30.0,70.0,86.0,75.0,19.0,99.0,1.0] :: [Double]
 
-correctlabels = [ (clasificacionLluvia,Right x) | x <- labels ] :: [(Either Discreto Continuo, Either String Double)]
+correctlabelsC = [ (clasificacionLluvia,Right x) | x <- labelsC ] :: [(Either Discreto Continuo, Either String Double)]
+
+labelsD = ["no","no","no","yes","yes","no","yes","no","yes","yes","yes","yes","yes","no"]
+
+correctlabelsD = [ aleft (rains,x) | x <- labelsD ]
 
 unlabeledD = [
           [(outlookC, 0.0), (humidityC, 0.0),(windyC, 1.0)],
@@ -63,4 +67,6 @@ unlabeledRight = map (map aright) unlabeledC
 
 unlabeled = map ( \(x,y) -> x ++ y ) (zip unlabeledLeft unlabeledRight)
 
-ejemplosLluvia = zip unlabeled correctlabels :: [Ejemplo]
+ejemplosLluviaC = zip unlabeled correctlabelsC :: [Ejemplo]
+
+ejemplosLluviaD = zip unlabeled correctlabelsD :: [Ejemplo]
