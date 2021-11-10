@@ -1,47 +1,40 @@
 module AuxCART where
 
 import TiposCART
-import GananciaNormalizada
 import DiscretizarContinuo
 import UtilsCART
 import EjemplosCART
 import Data.Either
-import EjemplosLluviaCART
+import EjemplosCART
+import Gini
+import ECM
+
 
 -- Encontrar atributo que mejor clasifica una lista de ejemplos.
 
-mejorclasifica :: [Atributo] -> [Ejemplo] -> Atributo
-mejorclasifica atributos ejemplos =
+mejorclasifica :: ([Ejemplo] -> Atributo -> Double) -> [Atributo] -> [Ejemplo] -> Atributo
+mejorclasifica f atributos ejemplos =
        let atributo_inic = head atributos
-           ganancia_inic = ganancianorm ejemplos atributo_inic 
-       in mejorclasificaaux (tail atributos) ejemplos atributo_inic ganancia_inic
+           valor_inic = f ejemplos atributo_inic 
+       in mejorclasificaaux f (tail atributos) ejemplos atributo_inic valor_inic
 
-mejorclasificaaux ::  [Atributo] -> [Ejemplo] -> Atributo -> Double -> Atributo
-mejorclasificaaux [] _ ac _ = ac
-mejorclasificaaux (atributo:atributos) ejemplos ac gan =
-       let g_new = ganancianorm ejemplos atributo
-       in if g_new > gan
-          then mejorclasificaaux atributos ejemplos atributo g_new
-       else mejorclasificaaux atributos ejemplos ac gan
+mejorclasificaaux :: ([Ejemplo] -> Atributo -> Double) -> [Atributo] -> [Ejemplo] -> Atributo -> Double -> Atributo
+mejorclasificaaux _ [] _ ac _ = ac
+mejorclasificaaux f (atributo:atributos) ejemplos ac valor =
+       let valor_new = f ejemplos atributo
+       in if valor_new < valor
+          then mejorclasificaaux f atributos ejemplos atributo valor_new
+       else mejorclasificaaux f atributos ejemplos ac valor
 
--- version 2
--- ganancias :: [Atributo] -> [Ejemplo] -> [(Atributo,Double)]
--- ganancias atributos ejemplos =
---           map (\ x -> (x, ganancianorm ejemplos x)) atributos
-
--- mejorclasifica2 :: [Atributo] -> [Ejemplo] -> Atributo
--- mejorclasifica2 atributos ejemplos =
---         let maximo = maximum $ map snd ls
---             ls = (ganancias atributos ejemplos)
---         in fst $ head $ filter (\x -> snd x == maximo) ls
-
+mejorclasificaECM = mejorclasifica ecm_atributo
+mejorclasificaGini = mejorclasifica gini_atributo
 
 -- Criterios de parada
 
 -- Comprobar si una lista de ejemplos es homogénea.
 
 homogeneo :: [Ejemplo] -> (Bool, ValorAtrib)
-homogeneo [] = (False, "Vacío")
+homogeneo [] = (False, Left "Vacío")
 homogeneo ejemplos =
           let clasificaciones = map clasificacion ejemplos
               hoja = head clasificaciones
@@ -49,22 +42,27 @@ homogeneo ejemplos =
           then (True, hoja)
           else (False, hoja)
 
-
-
 -- Devolver etiqueta más común en lista de ejemplos.
 -- Problema: dos clasificaciones que tengan el mismo número de ejemplos.
 
-mascomun :: [Ejemplo] -> ValorAtrib
-mascomun [] = Left "Aqui esta el error: mascomun de lista vacia"
+mascomun :: [Ejemplo] -> String
+mascomun [] = "Aqui esta el error: mascomun de lista vacia"
 mascomun ejemplos =
          let valores_clasificacion = (posiblesval.atributoObjetivo.head) ejemplos
-             clasificaciones = map (clasificacion) ejemplos
-         in maximo [ (x,ocurrencia x clasificaciones) | x <- valores_clasificacion ] (head clasificaciones,0)
+             clasificaciones = map (getL.clasificacion) ejemplos
+         in (maximo [ (x,ocurrencia clasificaciones x) | x <- valores_clasificacion ] (head clasificaciones,0))
 
 
-parada :: Double -> [Ejemplo] -> (Bool, String)
-parada min ejemplos =
+paradaClasificacion :: Double -> [Ejemplo] -> (Bool, String)
+paradaClasificacion min ejemplos =
        let n = fromIntegral $ length ejemplos
            h = mascomun ejemplos
-           p_h = (fromIntegral $ ocurrencia h (map (getL.clasificacion) ejemplos)) / n
+           p_h = (fromIntegral $ ocurrencia (map (getL.clasificacion) ejemplos) h) / n
        in if p_h >= min then (True, h) else (False, h)
+
+paradaRegresion :: Double -> [Ejemplo] -> (Bool, Double)
+paradaRegresion max ejemplos =
+       let n = fromIntegral $ length ejemplos
+           pred = prediccionhoja ejemplos
+           error = ecm ejemplos
+       in if error <= max then (True, pred) else (False, pred)

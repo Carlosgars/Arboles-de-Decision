@@ -17,7 +17,7 @@ windyC = C { cnombre ="windy", rango=(0,1), umbral=Nothing}
 rains = D { dnombre ="rains", posiblesvalores=["yes","no"]}
 prob_rains = C { cnombre ="prob_rains", rango=(0,100), umbral=Nothing}
 
-atLluviaCART = [Right outlookC, Right temperature, Left humidityC, Left windyC]
+atLluviaCART = [Right outlookC, Right temperature, Right humidityC, Right windyC] :: [Atributo]
 clasificacionLluvia = Right prob_rains
 
 labelsC = [15.0,23.0,26.0,77.0,65.0,5.0,95.0,30.0,70.0,86.0,75.0,19.0,99.0,1.0] :: [Double]
@@ -70,3 +70,7 @@ unlabeled = map ( \(x,y) -> x ++ y ) (zip unlabeledLeft unlabeledRight)
 ejemplosLluviaC = zip unlabeled correctlabelsC :: [Ejemplo]
 
 ejemplosLluviaD = zip unlabeled correctlabelsD :: [Ejemplo]
+
+
+outlookCumbral = C { cnombre = "outlook", rango=(0,2), umbral=(Just 1.5) }
+

@@ -46,7 +46,7 @@ calculoGanD ejemplos atributo valor =
 normaD :: [Ejemplo] -> Discreto -> Double
 normaD [] _ = 1
 normaD ejemplos atributo =
-           let valores = posiblesvalores atributo
+let valores = posiblesvalores atributo
            in sum $ map (calculonorm ejemplos atributo) valores
 
 calculonorm :: [Ejemplo] -> Discreto -> String -> Double

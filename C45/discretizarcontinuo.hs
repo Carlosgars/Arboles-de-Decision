@@ -21,8 +21,8 @@ discretizar ejemplos (Right atributo) =
 
 mejorumbral :: Continuo -> [Ejemplo] -> Double
 mejorumbral atributo ejemplos =
-        let v = map getR (valores (Right atributo) ejemplos)
-            us = ordensindups $ posiblesParticiones atributo v
+        let v = ordensindups $ map getR (valores (Right atributo) ejemplos)
+            us = posiblesParticiones atributo v
             um_inic = head us
             gan_inic = ganInfoNormCUmbral atributo ejemplos um_inic
         in mejorumbralAux atributo ejemplos (tail us) um_inic gan_inic
