@@ -2,9 +2,8 @@ module EjemplosLluviaC45 where
 
 import TiposC45
 import Data.Maybe
+import EjemplosC45
 
-aleft par = (Left $ fst par, Left $ snd par)
-aright par = (Right $ fst par, Right $ snd par)
 
 outlook = D { dnombre = "outlook", posiblesvalores=["sunny", "overcast", "rainy"] }
 temperature = C { cnombre ="temperature", rango=(0,30), umbral=Nothing }

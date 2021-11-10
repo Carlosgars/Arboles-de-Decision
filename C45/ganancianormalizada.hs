@@ -26,7 +26,13 @@ calculoentropia ejemplos valor =
 
 -- Discreto
 
-
+gananciaD ::[Ejemplo] -> Discreto -> Double
+gananciaD [] _ = 0
+gananciaD ejemplos atributo =
+         let valores = posiblesvalores atributo
+             ganancia = sum $ map (calculoGanD ejemplos atributo) valores
+         in entropia ejemplos - ganancia
+         
 ganancianormD ::[Ejemplo] -> Discreto -> Double
 ganancianormD [] _ = 0
 ganancianormD ejemplos atributo =
@@ -40,13 +46,12 @@ calculoGanD :: [Ejemplo] -> Discreto -> String -> Double
 calculoGanD [] atributo valor = 0
 calculoGanD ejemplos atributo valor =
            let sv = evaluarDiscreto ejemplos valor atributo
-           in
-           (entropia sv) * (fromIntegral $ length sv) / (fromIntegral $ length ejemplos)
+           in (entropia sv) * (fromIntegral $ length sv) / (fromIntegral $ length ejemplos)
 
 normaD :: [Ejemplo] -> Discreto -> Double
 normaD [] _ = 1
 normaD ejemplos atributo =
-let valores = posiblesvalores atributo
+           let valores = posiblesvalores atributo
            in sum $ map (calculonorm ejemplos atributo) valores
 
 calculonorm :: [Ejemplo] -> Discreto -> String -> Double
@@ -62,21 +67,6 @@ calculonorm ejemplos atributo valor =
 ganInfoNormCUmbral :: Continuo -> [Ejemplo] -> Double -> Double
 ganInfoNormCUmbral _ [] _ = 0
 ganInfoNormCUmbral atributo ejemplos umbral =
-        -- let atrib = Right atributo
-        --     s1 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
-        --     s2 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
-        --     n = fromIntegral $ length ejemplos
-        --     p1 = (fromIntegral $ length s1) / n
-        --     p2 = (fromIntegral $ length s2) / n
-        --     norm = - p1 * (logBase (fromIntegral 2)  p1) - p2 * (logBase (fromIntegral 2)  p2) 
-        -- in
-        -- if p1 /= 0 && p2 /= 0
-        -- then (entropia ejemplos - (entropia s1) * p1 - (entropia s2) * p2) / norm
-        -- else if p1 /= 0 && p2 == 0
-        -- then (entropia ejemplos - (entropia s1) * p1) /  (- p1 * (logBase (fromIntegral 2)  p1))
-        -- else if p1 == 0 && p2 /= 0
-        -- then (entropia ejemplos - (entropia s2) * p2) /  (- p2 * (logBase (fromIntegral 2)  p2))
-        -- else 0
         let atrib = Right atributo
             s1 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
             s2 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
