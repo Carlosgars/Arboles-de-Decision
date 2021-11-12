@@ -30,32 +30,31 @@ normaD [] _ = 1
 normaD ejemplos atributo =
     let xs = posiblesvaloresD atributo
         n = lengthDouble ejemplos
-    in foldl (\ac x ->
-              let pc = (lengthDouble $ evaluarD ejemplos x atributo) / n
+    in foldl (\ac x -> let pc = (lengthDouble $ evaluarD ejemplos x atributo) / n
               in ac - pc * (logBase (fromIntegral 2)  pc)) 0 xs
               
 gananciaNormCUmbral :: [Ejemplo] -> Continuo -> Double -> Double
 gananciaNormCUmbral [] _ _ = 0
 gananciaNormCUmbral ejemplos atributo umbral =
-        let atrib = Right atributo
-            s1 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
-            s2 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
-            n = lengthDouble ejemplos
-            norm = foldl (\ac s -> let p = (lengthDouble s) / n
-                              in ac - p * (logBase (fromIntegral 2)  p)) 0 [s1,s2]
-            ganancia = foldl (\ac s -> let p = (lengthDouble s) / n
-                              in ac + (entropia s) * p) 0 [s1,s2]
-        in if norm /= 0
-        then (entropia ejemplos - ganancia) / norm
-        else 0 
+    let atrib = Right atributo
+        s1 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
+        s2 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
+        n = lengthDouble ejemplos
+        norm = foldl (\ac s -> let p = (lengthDouble s) / n
+                      in ac - p * (logBase (fromIntegral 2)  p)) 0 [s1,s2]
+        ganancia = foldl (\ac s -> let p = (lengthDouble s) / n
+                          in ac + (entropia s) * p) 0 [s1,s2]
+    in if norm /= 0
+       then (entropia ejemplos - ganancia) / norm
+       else 0 
 
 gananciaNormC ::  [Ejemplo] -> Continuo -> Double
 gananciaNormC [] _ = 0
 gananciaNormC ejemplos atributo =
-          let u = fromJust $ umbral atributo
-          in gananciaNormCUmbral ejemplos atributo u
+    let u = fromJust $ umbral atributo
+    in gananciaNormCUmbral ejemplos atributo u
 
 gananciaNorm :: [Ejemplo] -> Atributo -> Double
 gananciaNorm [] _ = 0
-gananciaNorm ejemplos atributo = either (gananciaNormD ejemplos) (gananciaNormC ejemplos) atributo
-
+gananciaNorm ejemplos atributo =
+    either (gananciaNormD ejemplos) (gananciaNormC ejemplos) atributo

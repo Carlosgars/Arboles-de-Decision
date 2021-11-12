@@ -9,6 +9,8 @@ import RandomForest
 import ECM
 import Entropia
 import GananciaNormalizada
+import Gini
+import MejorAtributo
 
 -- Crear arboles --
 arbolC45sexoD = c45 0.75 atributosSexoD ejemplosSexoD

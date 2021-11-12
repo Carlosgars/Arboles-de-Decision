@@ -36,7 +36,18 @@ mejorUmbralAux f operador atributo ejemplos (u:us) umbral valor_f =
     then mejorUmbralAux f operador atributo ejemplos us u nuevo_valor_f
     else mejorUmbralAux f operador atributo ejemplos us umbral valor_f
 
-
 discretizarGanInfo = discretizar gananciaNormCUmbral (>)
 discretizarECM = discretizar ecmAtributoUmbral (<)
 discretizarGini = discretizar giniAtributoUmbral (<)
+
+--- Posible Fold --- 
+mejorUmbral2 :: ([Ejemplo] -> Continuo -> Double -> Double) -> (Double -> Double -> Bool) -> Continuo -> [Ejemplo] -> Double
+mejorUmbral2 f operador atributo ejemplos =
+    let v = ordensindups $ map getR (valores (Right atributo) ejemplos)
+        us =  posiblesParticiones atributo v
+        umbral_inic = head us
+    in foldl (\ac x -> let valor_new = f ejemplos atributo x
+                           valor_old = f ejemplos atributo ac
+              in if valor_new `operador` valor_old
+                 then x
+                 else ac) (head us) (tail us)
