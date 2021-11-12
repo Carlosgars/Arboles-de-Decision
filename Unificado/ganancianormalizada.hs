@@ -11,40 +11,29 @@ import Data.Maybe
 gananciaInformacionD ::[Ejemplo] -> Discreto -> Double
 gananciaInformacionD [] _ = 0
 gananciaInformacionD ejemplos atributo =
-         let valores = posiblesvaloresD atributo
-             ganancia = sum $ map (calculoGananciaD ejemplos atributo) valores
-         in entropia ejemplos - ganancia
-         
+    let xs = posiblesvaloresD atributo
+        norm = normaD ejemplos atributo
+        ganancia = foldl (\ac x ->
+            let sv = evaluarD ejemplos x atributo
+            in ac + (entropia sv) * (lengthDouble sv) / (lengthDouble ejemplos)) 0 xs
+    in entropia ejemplos - ganancia
+
 gananciaNormD ::[Ejemplo] -> Discreto -> Double
 gananciaNormD [] _ = 0
 gananciaNormD ejemplos atributo =
-         let norm = normaD ejemplos atributo
-             valores = posiblesvaloresD atributo
-             ganancia = sum $ map (calculoGananciaD ejemplos atributo) valores
-         in
-         (entropia ejemplos - ganancia) / norm
+    let norm = normaD ejemplos atributo
+    in gananciaInformacionD ejemplos atributo / norm
          
-calculoGananciaD :: [Ejemplo] -> Discreto -> String -> Double
-calculoGananciaD [] atributo valor = 0
-calculoGananciaD ejemplos atributo valor =
-           let sv = evaluarD ejemplos valor atributo
-           in (entropia sv) * (lengthDouble sv) / (lengthDouble ejemplos)
 
 normaD :: [Ejemplo] -> Discreto -> Double
 normaD [] _ = 1
 normaD ejemplos atributo =
-           let valores = posiblesvaloresD atributo
-           in sum $ map (calculoNormaD ejemplos atributo) valores
-
-calculoNormaD :: [Ejemplo] -> Discreto -> String -> Double
-calculoNormaD [] atributo valor = 1
-calculoNormaD ejemplos atributo valor =
-        let n = lengthDouble ejemplos
-            vc = lengthDouble $ evaluarD ejemplos valor atributo
-            pc = vc / n
-            output = - pc * (logBase (fromIntegral 2)  pc)
-        in  - pc * (logBase (fromIntegral 2)  pc)
-        
+    let xs = posiblesvaloresD atributo
+        n = lengthDouble ejemplos
+    in foldl (\ac x ->
+              let pc = (lengthDouble $ evaluarD ejemplos x atributo) / n
+              in ac - pc * (logBase (fromIntegral 2)  pc)) 0 xs
+              
 
 gananciaNormCUmbral :: [Ejemplo] -> Continuo -> Double -> Double
 gananciaNormCUmbral [] _ _ = 0
