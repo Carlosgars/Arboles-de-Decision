@@ -48,6 +48,12 @@ elimina _ []                 = []
 elimina x (y:ys) | x == y    = elimina x ys
                    | otherwise = y : elimina x ys
 
+eliminaLista :: (Eq a) => [a] -> [a] -> [a]
+eliminaLista [] ys = ys
+eliminaLista _ [] = []
+eliminaLista (x:xs) ys =
+    elimina x (eliminaLista xs ys)
+
 valorAtributo :: Ejemplo -> Atributo -> ValorAtrib
 valorAtributo ejemplo atributo =
        snd $ head (filter (\x -> fst x == atributo) (fst ejemplo))

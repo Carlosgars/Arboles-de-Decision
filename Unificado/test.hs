@@ -5,6 +5,7 @@ import ConstruirModelos
 import Error
 import Evaluar
 import Utils
+import RandomForest
 
 -- Crear arboles --
 arbolC45sexoD = c45 atributosSexoD ejemplosSexoD
@@ -57,3 +58,18 @@ e8 = errorRegresionConjunto arbolCARTsexo_reg ejemplosSexoCART
 
 e9 = errorClasificacionConjunto arbolCARTLluvia_clas ejemplosLluviaCARTclasificacion
 e10 = errorRegresionConjunto arbolCARTLluvia_reg ejemplosLluviaCARTregresion
+
+
+-- Random Forest --
+
+boostedentrenamientos = boostTrainings 2 ejemplosSexoD (5,5)
+boostedatributos = boostAtribs 3 1 atributosSexoD (4,3)
+
+
+rf = (buildkModels 3 ejemplosLluviaC45 atributosLluviaC45 2 c45)
+
+lc = listaPredicciones (ejemploLluviaC45,(Left rains,Left "yes")) rf
+
+may = votoMayoritario lc
+
+pc = prediccionCombinada (ejemploLluviaC45,(Left rains,Left "yes")) rf
