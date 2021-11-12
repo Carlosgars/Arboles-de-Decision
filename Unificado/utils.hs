@@ -36,6 +36,9 @@ elimina _ []                 = []
 elimina x (y:ys) | x == y    = elimina x ys
                    | otherwise = y : elimina x ys
 
+media :: [Double] -> Double
+media xs = sum xs / lengthDouble xs
+
 eliminaLista :: (Eq a) => [a] -> [a] -> [a]
 eliminaLista [] ys = ys
 eliminaLista _ [] = []

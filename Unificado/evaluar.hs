@@ -13,6 +13,6 @@ predice (Nodo (Right atributo) hijo) atrib_val =
     let v = getR $ snd $ head $ filter (\x -> fst x == (Right atributo)) atrib_val
         u = fromJust $ umbral atributo
     in if v <= u
-    then predice (hijo "<=") atrib_val
-    else predice (hijo ">") atrib_val
+       then predice (hijo "<=") atrib_val
+       else predice (hijo ">") atrib_val
 

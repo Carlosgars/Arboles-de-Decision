@@ -1,11 +1,13 @@
 module Test where
 
 import Ejemplos
-import ConstruirModelos
+import ConstruirArbol
 import Error
 import Evaluar
 import Utils
 import RandomForest
+import ECM
+import Entropia
 
 -- Crear arboles --
 arbolC45sexoD = c45 0.75 atributosSexoD ejemplosSexoD
@@ -16,11 +18,11 @@ arbolC45lluviaDC = c45 0.75 atributosLluviaC45 ejemplosLluviaC45
 arbolC45lluviaD = c45 0.75 atributosLluviaID3 ejemplosLluviaID3
 arbolC45lluviaC = c45 0.75 atributosLluviaCART ejemplosLluviaCARTclasificacion
 
-arbolCARTsexo_clas = cart "clasificacion" atributosSexoC ejemplosSexoC
-arbolCARTsexo_reg = cart "regresion" atributosSexoC ejemplosSexoCART
+arbolCARTsexo_clas = cart "clasificacion" 0.75 atributosSexoC ejemplosSexoC
+arbolCARTsexo_reg = cart "regresion" 500 atributosSexoC ejemplosSexoCART
 
-arbolCARTLluvia_clas = cart "clasificacion" atributosLluviaCART ejemplosLluviaCARTclasificacion
-arbolCARTLluvia_reg = cart "regresion" atributosLluviaCART ejemplosLluviaCARTregresion
+arbolCARTLluvia_clas = cart "clasificacion" 0.75 atributosLluviaCART ejemplosLluviaCARTclasificacion
+arbolCARTLluvia_reg = cart "regresion" 500 atributosLluviaCART ejemplosLluviaCARTregresion
 
 -- Ejemplos a predecir --
 
@@ -73,3 +75,4 @@ lc = listaPredicciones (ejemploLluviaC45,(Left rains,Left "yes")) rf
 may = votoMayoritario lc
 
 pc = prediccionCombinada (ejemploLluviaC45,(Left rains,Left "yes")) rf
+
