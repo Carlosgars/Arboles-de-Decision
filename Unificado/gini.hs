@@ -9,7 +9,7 @@ gini ejemplos =
      let n = lengthDouble ejemplos
          clasificaciones = map (getL.valorObjetivo) ejemplos
          valores = posiblesValores $ atributoObjetivo $ head ejemplos
-         ocurr = map (fromIntegral.ocurrencia clasificaciones) valores
+         ocurr = map (ocurrencia clasificaciones) valores
          prob = map (1/n*) ocurr
          probraised = map (^2) prob
      in 1 - sum probraised

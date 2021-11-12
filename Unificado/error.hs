@@ -11,19 +11,11 @@ bienClasificado arbol ejemplo =
        clas_correcta = valorObjetivo ejemplo
    in prediccion == clas_correcta
 
-
--- devolver el porcentaje de ejemplos clasificados incorrectamente
-
 errorClasificacionConjunto :: Arbol -> [Ejemplo] -> Double
 errorClasificacionConjunto arbol ejemplos =
-    let atribvalor = map fst ejemplos
-        predicciones = map (predice arbol) atribvalor
-        correctas = map (valorObjetivo) ejemplos
-        pred_clas = zip predicciones correctas
-        errores = sum $ map (\(x,y) -> if x == y then 0 else 1) pred_clas
+    let errores = lengthDouble $ filter (==False) (map (bienClasificado arbol) ejemplos)
         n = lengthDouble ejemplos
     in errores / n
-
 
 errorRegresion :: Arbol -> Ejemplo -> Double
 errorRegresion arbol ejemplo =
@@ -31,7 +23,6 @@ errorRegresion arbol ejemplo =
        prediccion = getR $ predice arbol (fst ejemplo)
    in (correcta - prediccion) ^ 2
 
--- devolver el ECM de los ejemplos y sus predicciones
 errorRegresionConjunto :: Arbol -> [Ejemplo] -> Double
 errorRegresionConjunto arbol ejemplos =
     let error = sum $ map (errorRegresion arbol) ejemplos

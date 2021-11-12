@@ -8,13 +8,13 @@ import Utils
 import RandomForest
 
 -- Crear arboles --
-arbolC45sexoD = c45 atributosSexoD ejemplosSexoD
-arbolC45sexoDC = c45 atributosSexoDC ejemplosSexoDC
-arbolC45sexoC = c45 atributosSexoC ejemplosSexoC
+arbolC45sexoD = c45 0.75 atributosSexoD ejemplosSexoD
+arbolC45sexoDC = c45 0.75 atributosSexoDC ejemplosSexoDC
+arbolC45sexoC = c45 0.75 atributosSexoC ejemplosSexoC
 
-arbolC45lluviaDC = c45 atributosLluviaC45 ejemplosLluviaC45
-arbolC45lluviaD = c45 atributosLluviaID3 ejemplosLluviaID3
-arbolC45lluviaC = c45 atributosLluviaCART ejemplosLluviaCARTclasificacion
+arbolC45lluviaDC = c45 0.75 atributosLluviaC45 ejemplosLluviaC45
+arbolC45lluviaD = c45 0.75 atributosLluviaID3 ejemplosLluviaID3
+arbolC45lluviaC = c45 0.75 atributosLluviaCART ejemplosLluviaCARTclasificacion
 
 arbolCARTsexo_clas = cart "clasificacion" atributosSexoC ejemplosSexoC
 arbolCARTsexo_reg = cart "regresion" atributosSexoC ejemplosSexoCART
@@ -62,11 +62,11 @@ e10 = errorRegresionConjunto arbolCARTLluvia_reg ejemplosLluviaCARTregresion
 
 -- Random Forest --
 
-boostedentrenamientos = boostTrainings 2 ejemplosSexoD (5,5)
-boostedatributos = boostAtribs 3 1 atributosSexoD (4,3)
+boostedentrenamientos = bootsEjemplos 2 ejemplosSexoD (5,5)
+boostedatributos = bootsAtribs 3 1 atributosSexoD (4,3)
 
 
-rf = (buildkModels 3 ejemplosLluviaC45 atributosLluviaC45 2 c45)
+rf = (construirkArboles 3 ejemplosLluviaC45 atributosLluviaC45 2 (c45 0.75))
 
 lc = listaPredicciones (ejemploLluviaC45,(Left rains,Left "yes")) rf
 

@@ -8,38 +8,32 @@ import DiscretizarContinuo
 import Utils
 import Parada
 
----------
--- ID3 --
----------
-
-
-
-
 ----------
 -- C4.5 --
 ----------
 
 c45 = c45Aux "error: Ejemplos vacio."
 
-c45Aux :: String -> [Atributo] -> [Ejemplo] -> Arbol
-c45Aux mascomunpadre _ [] = Hoja (Left mascomunpadre)
-c45Aux _ [] ejemplos = Hoja (Left (mascomun ejemplos))
-c45Aux mascomunpadre atributos ejemplos =
+c45Aux :: String -> Double -> [Atributo] -> [Ejemplo] -> Arbol
+c45Aux mas_comun_padre _ _ [] = Hoja $ Left mas_comun_padre
+c45Aux _ _ [] ejemplos = Hoja $ Left $ masComun ejemplos
+c45Aux mas_comun_padre min_parada atributos ejemplos =
     let discretizados = map (discretizarGanInfo ejemplos) atributos
-        mejoratributo = mejorClasificaGan discretizados ejemplos
-        new_atributos = elimina mejoratributo atributos
-        posiblehoja = paradaClasificacion 0.75 ejemplos
-        mascomunpadre = mascomun ejemplos
+        mejor_atributo = mejorClasificaGan discretizados ejemplos
+        nuevo_atributos = elimina mejor_atributo atributos
+        parada = paradaClasificacion min_parada ejemplos
+        nuevo_mas_comun_padre = masComun ejemplos
     in
-    if fst posiblehoja
-    then Hoja (Left (snd posiblehoja))
-    else Nodo mejoratributo (creahijoc45 mascomunpadre new_atributos (evaluar ejemplos mejoratributo))
+    if fst parada
+    then Hoja $ Left $ snd parada
+    else Nodo mejor_atributo
+    (creaHijoC45 nuevo_mas_comun_padre min_parada nuevo_atributos (evaluar ejemplos mejor_atributo))
 
 
-creahijoc45 :: String -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
-creahijoc45 mascomunpadre atributos evaluarvalor valor =
-         let ejemplos = evaluarvalor valor
-         in c45Aux mascomunpadre atributos ejemplos
+creaHijoC45 :: String -> Double -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
+creaHijoC45 mas_comun_padre min_parada atributos evaluarValor valor =
+         let ejemplos = evaluarValor valor
+         in c45Aux mas_comun_padre min_parada atributos ejemplos
 
 ----------
 -- CART --
@@ -47,31 +41,34 @@ creahijoc45 mascomunpadre atributos evaluarvalor valor =
 
 cart :: String -> [Atributo] -> [Ejemplo] -> Arbol
 cart "regresion" atributos ejemplos = runCARTregresion atributos ejemplos
-cart "clasificacion" atributos ejemplos = runCARTclasificacion atributos ejemplos
-cart _ atributos ejemplos = Hoja (Left "Seleccionar entre regresion o clasificacion")
+cart "clasificacion" atributos ejemplos = cartClasificacion 0.75atributos ejemplos
+cart _ atributos ejemplos = Hoja $ Left "error: Seleccionar entre regresion o clasificacion"
 
 -- Clasificacion --
 
-cartClasificacion :: String -> [Atributo] -> [Ejemplo] -> Arbol
-cartClasificacion mascomunpadre _ [] = Hoja (Left mascomunpadre)
-cartClasificacion _ [] ejemplos = Hoja (Left (mascomun ejemplos))
-cartClasificacion mascomunpadre atributos ejemplos =
+cartClasificacion = cartClasificacionAux "error: Ejemplos vacio."
+
+cartClasificacionAux :: String -> Double -> [Atributo] -> [Ejemplo] -> Arbol
+cartClasificacionAux mas_comun_padre _ _ [] = Hoja $ Left mas_comun_padre
+cartClasificacionAux _ _ [] ejemplos = Hoja $ Left $ masComun ejemplos
+cartClasificacionAux mas_comun_padre min_parada atributos ejemplos =
     let discretizados = map (discretizarGini ejemplos) atributos
-        mejoratributo = mejorClasificaGini discretizados ejemplos
-        new_atributos = elimina mejoratributo atributos
-        posiblehoja = paradaClasificacion 0.75 ejemplos
-        mascomunpadre = mascomun ejemplos
+        mejor_atributo = mejorClasificaGini discretizados ejemplos
+        nuevo_atributos = elimina mejor_atributo atributos
+        posiblehoja = paradaClasificacion min_parada ejemplos
+        nuevo_mas_comun_padre = masComun ejemplos
     in
     if fst posiblehoja
-    then Hoja (Left (snd posiblehoja))
-    else Nodo mejoratributo (creaHijoCARTclas mascomunpadre new_atributos (evaluar ejemplos mejoratributo))
+    then Hoja $ Left $ snd posiblehoja
+    else Nodo mejor_atributo
+    (creaHijoCARTclas nuevo_mas_comun_padre min_parada nuevo_atributos (evaluar ejemplos mejor_atributo))
 
-creaHijoCARTclas :: String -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
-creaHijoCARTclas mascomunpadre atributos evaluarvalor valor =
-         let ejemplos = evaluarvalor valor
-         in cartClasificacion mascomunpadre atributos ejemplos
+creaHijoCARTclas :: String -> Double -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
+creaHijoCARTclas mas_comun_padre min_parada atributos evaluarValor valor =
+         let ejemplos = evaluarValor valor
+         in cartClasificacionAux mas_comun_padre min_parada atributos ejemplos
 
-runCARTclasificacion = cartClasificacion "error: Ejemplos vacio."
+
 
 -- Regresion --
 
@@ -96,6 +93,19 @@ creaHijoRegresion predpadre atributos evaluarvalor valor =
          in cartRegresion predpadre atributos ejemplos
 
 runCARTregresion = cartRegresion 0.0
+
+
+---- Posible unificación ----
+
+creaHijo :: (ValorAtrib -> Double -> [Atributo] -> [Ejemplo] -> Arbol)
+         -> ValorAtrib -> Double -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol
+creaHijo modelo hoja_padre umbral_parada atributos evaluarValor valor =
+    let ejemplos = evaluarValor valor
+    in modelo hoja_padre umbral_parada atributos ejemplos
+
+--creaHijoC45_2 = creaHijo c45Aux
+--creaHijoCARTclas_2 = creaHijo cartClasificacionAux
+--creaHijoRegresion_2 = creaHijo cartRegresion
 
 
 
