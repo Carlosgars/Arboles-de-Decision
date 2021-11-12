@@ -34,7 +34,6 @@ normaD ejemplos atributo =
               let pc = (lengthDouble $ evaluarD ejemplos x atributo) / n
               in ac - pc * (logBase (fromIntegral 2)  pc)) 0 xs
               
-
 gananciaNormCUmbral :: [Ejemplo] -> Continuo -> Double -> Double
 gananciaNormCUmbral [] _ _ = 0
 gananciaNormCUmbral ejemplos atributo umbral =
@@ -42,24 +41,13 @@ gananciaNormCUmbral ejemplos atributo umbral =
             s1 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
             s2 = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
             n = lengthDouble ejemplos
-            norm = (calculoNormaC s1 n) + (calculoNormaC s2 n)
+            norm = foldl (\ac s -> let p = (lengthDouble s) / n
+                              in ac - p * (logBase (fromIntegral 2)  p)) 0 [s1,s2]
+            ganancia = foldl (\ac s -> let p = (lengthDouble s) / n
+                              in ac + (entropia s) * p) 0 [s1,s2]
         in if norm /= 0
-        then (entropia ejemplos - (calculoGananciaC s1 n) - (calculoGananciaC s2 n)) / norm
+        then (entropia ejemplos - ganancia) / norm
         else 0 
-
-calculoGananciaC :: [Ejemplo] -> Double -> Double
-calculoGananciaC _ 0 = 0
-calculoGananciaC [] _ = 0
-calculoGananciaC s n =
-        let p = (fromIntegral $ length s) / n
-        in (entropia s) * p
-
-calculoNormaC :: [Ejemplo] -> Double -> Double
-calculoNormaC _ 0 = 0
-calculoNormaC [] _ = 0
-calculoNormaC s n =
-        let p = (lengthDouble s) / n
-        in - p * (logBase (fromIntegral 2)  p) 
 
 gananciaNormC ::  [Ejemplo] -> Continuo -> Double
 gananciaNormC [] _ = 0
