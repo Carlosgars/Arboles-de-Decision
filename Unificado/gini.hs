@@ -7,7 +7,7 @@ gini :: [Ejemplo] -> Double
 gini [] = 0
 gini ejemplos = 
      let n = lengthDouble ejemplos
-         clasificaciones = map (getL.valoresObjetivo) ejemplos
+         clasificaciones = map (getL.valorObjetivo) ejemplos
          valores = posiblesValores $ atributoObjetivo $ head ejemplos
          ocurr = map (fromIntegral.ocurrencia clasificaciones) valores
          prob = map (1/n*) ocurr

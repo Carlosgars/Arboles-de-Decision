@@ -8,7 +8,7 @@ import Utils
 bienClasificado :: Arbol -> Ejemplo -> Bool
 bienClasificado arbol ejemplo =
    let prediccion = predice arbol (fst ejemplo)
-       clas_correcta = valoresObjetivo ejemplo
+       clas_correcta = valorObjetivo ejemplo
    in prediccion == clas_correcta
 
 
@@ -18,7 +18,7 @@ errorClasificacionConjunto :: Arbol -> [Ejemplo] -> Double
 errorClasificacionConjunto arbol ejemplos =
     let atribvalor = map fst ejemplos
         predicciones = map (predice arbol) atribvalor
-        correctas = map (valoresObjetivo) ejemplos
+        correctas = map (valorObjetivo) ejemplos
         pred_clas = zip predicciones correctas
         errores = sum $ map (\(x,y) -> if x == y then 0 else 1) pred_clas
         n = lengthDouble ejemplos
@@ -27,7 +27,7 @@ errorClasificacionConjunto arbol ejemplos =
 
 errorRegresion :: Arbol -> Ejemplo -> Double
 errorRegresion arbol ejemplo =
-   let correcta = getR $ valoresObjetivo ejemplo
+   let correcta = getR $ valorObjetivo ejemplo
        prediccion = getR $ predice arbol (fst ejemplo)
    in (correcta - prediccion) ^ 2
 

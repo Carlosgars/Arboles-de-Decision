@@ -16,19 +16,6 @@ getL (Left x) = x
 getR :: Either a b -> b
 getR (Right x) = x
 
-atributoObjetivo :: Ejemplo -> Atributo
-atributoObjetivo = fst.snd
-
-valoresObjetivo :: Ejemplo -> ValorAtrib
-valoresObjetivo = snd.snd
-
-valores :: Atributo -> [Ejemplo] -> [ValorAtrib]
-valores _ [] = []
-valores atributo (e:ejemplos) =
-        [ snd x | x <- fst e, fst x == atributo ]
-        ++
-        valores atributo ejemplos
-
 ordensindups :: (Ord a) => [a] -> [a]
 ordensindups = map head . group . sort
 
@@ -54,6 +41,19 @@ eliminaLista _ [] = []
 eliminaLista (x:xs) ys =
     elimina x (eliminaLista xs ys)
 
+atributoObjetivo :: Ejemplo -> Atributo
+atributoObjetivo = fst.snd
+
+valorObjetivo :: Ejemplo -> ValorAtrib
+valorObjetivo = snd.snd
+
+valores :: Atributo -> [Ejemplo] -> [ValorAtrib]
+valores _ [] = []
+valores atributo (e:ejemplos) =
+        [ snd x | x <- fst e, fst x == atributo ]
+        ++
+        valores atributo ejemplos
+
 valorAtributo :: Ejemplo -> Atributo -> ValorAtrib
 valorAtributo ejemplo atributo =
        snd $ head (filter (\x -> fst x == atributo) (fst ejemplo))
@@ -69,9 +69,9 @@ evaluarC ejemplos valor atributo =
                atrib = (Right atributo)
            in
            if valor == "<="
-           then [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= u ]
+           then filter (\x -> (getR$valorAtributo x atrib) <= u) ejemplos
            else if valor == ">"
-           then [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > u ]
+           then filter (\x -> (getR$valorAtributo x atrib) > u) ejemplos
            else []
 
 evaluar :: [Ejemplo]  -> Atributo -> String -> [Ejemplo]

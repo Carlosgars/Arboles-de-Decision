@@ -9,12 +9,12 @@ media xs = sum xs / lengthDouble xs
 
 prediccionHoja :: [Ejemplo] -> Double
 prediccionHoja ejemplos =
-    let v = map (getR.valoresObjetivo) ejemplos
+    let v = map (getR.valorObjetivo) ejemplos
     in media v
        
 ecm :: [Ejemplo] -> Double
 ecm ejemplos =
-    let v = map (getR.valoresObjetivo) ejemplos
+    let v = map (getR.valorObjetivo) ejemplos
         prediccion = media v
         ecms = map (\ x -> (x-prediccion)^2) v
     in media ecms

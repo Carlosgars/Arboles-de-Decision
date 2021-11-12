@@ -11,6 +11,7 @@ sexo = D "sexo" ["hombre","mujer"] :: Discreto
 sexoC = C "sexo" (0,1) Nothing :: Continuo
 altura = D "altura" ["bajo","medio","alto"] :: Discreto
 alturaC = C "altura" (0,2) Nothing :: Continuo
+alturaC2 = C "altura" (0,2) (Just 1.5) :: Continuo
 peso = D "peso" ["ligero", "pesado"] :: Discreto
 pesoC = C "peso"  (50,110) Nothing :: Continuo
 
