@@ -11,5 +11,5 @@ entropia ejemplos =
     let valores = posiblesValores $ atributoObjetivo $ head ejemplos
         n       = lengthDouble ejemplos
         f       = ocurrencia (map (getL.valorObjetivo) ejemplos)
-    in foldl (\ac x -> let p = (f x) / n in ac - p * (logBase (fromIntegral 2)  p) )
+    in foldl (\ac x -> let p = (f x) / n in if p>0 then ac - p * (logBase (fromIntegral 2)  p) else ac )
     0 valores

@@ -11,6 +11,7 @@ import Entropia
 import GananciaNormalizada
 import Gini
 import MejorAtributo
+import DiscretizarContinuo
 
 -- Crear arboles --
 arbolC45sexoD = c45 0.75 atributosSexoD ejemplosSexoD
@@ -22,7 +23,7 @@ arbolC45lluviaD = c45 0.75 atributosLluviaID3 ejemplosLluviaID3
 arbolC45lluviaC = c45 0.75 atributosLluviaCART ejemplosLluviaCARTclasificacion
 
 arbolCARTsexo_clas = cart "clasificacion" 0.75 atributosSexoC ejemplosSexoC
-arbolCARTsexo_reg = cart "regresion" 500 atributosSexoC ejemplosSexoCART
+arbolCARTsexo_reg = cart "regresion" 0.001 atributosSexoC ejemplosSexoCART
 
 arbolCARTLluvia_clas = cart "clasificacion" 0.75 atributosLluviaCART ejemplosLluviaCARTclasificacion
 arbolCARTLluvia_reg = cart "regresion" 500 atributosLluviaCART ejemplosLluviaCARTregresion
@@ -79,3 +80,16 @@ may = votoMayoritario lc
 
 pc = prediccionCombinada (ejemploLluviaC45,(Left rains,Left "yes")) rf
 
+
+
+s1 = [ejemploDC3]
+s2 = [ejemploDC1,ejemploDC2,ejemploDC4,ejemploDC5]
+n = 5
+gan_norm =
+         foldl (\(g,n) s -> let p = (lengthDouble s) / 5.0
+                     in ( g + (entropia s) * p,
+                         if p > 0 then n - p * (logBase (fromIntegral 2)  p) else n) )
+                     (0,0) [s1,s2]
+
+atrib = Right pesoC
+umb = 55.0

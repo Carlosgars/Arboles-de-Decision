@@ -2,6 +2,8 @@ module Ejemplos where
 
 import Tipos
 import Utils
+import DiscretizarContinuo
+import GananciaNormalizada
 
 ---------------------
 --- Ejemplos SEXO ---
@@ -21,24 +23,24 @@ atributosSexoC = [Right alturaC, Right pesoC] :: [Atributo]
 
 
 ejemploDC1 = ([aleft (altura,"alto"), aright (pesoC, 90.0)], aleft (sexo,"hombre")) :: Ejemplo
-ejemploDC2 = ([aleft (altura,"medio"), aright (pesoC,70.0)], aleft (sexo,"hombre")) :: Ejemplo
+ejemploDC2 = ([aleft (altura,"medio"), aright (pesoC,80.0)], aleft (sexo,"hombre")) :: Ejemplo
 ejemploDC3 = ([aleft (altura,"bajo"), aright (pesoC, 50.0)], aleft (sexo,"mujer")) :: Ejemplo
 ejemploDC4 = ([aleft (altura,"medio"), aright (pesoC, 60.0)], aleft (sexo,"mujer")) :: Ejemplo
-ejemploDC5 = ([aleft (altura,"bajo"), aright (pesoC, 80.0)], aleft (sexo,"mujer")) :: Ejemplo
+ejemploDC5 = ([aleft (altura,"bajo"), aright (pesoC, 70.0)], aleft (sexo,"mujer")) :: Ejemplo
 ejemplosSexoDC = [ejemploDC1,ejemploDC2,ejemploDC3,ejemploDC4,ejemploDC5] :: [Ejemplo]
 
 ejemploD1 = ([aleft (altura,"alto"), aleft (peso, "pesado")], aleft (sexo,"hombre")) :: Ejemplo
-ejemploD2 = ([aleft (altura,"medio"), aleft (peso,"ligero")], aleft (sexo,"hombre")) :: Ejemplo
+ejemploD2 = ([aleft (altura,"medio"), aleft (peso,"pesado")], aleft (sexo,"hombre")) :: Ejemplo
 ejemploD3 = ([aleft (altura,"bajo"), aleft (peso,"ligero")], aleft (sexo,"mujer")) :: Ejemplo
 ejemploD4 = ([aleft (altura,"medio"), aleft (peso,"ligero")], aleft (sexo,"mujer")) :: Ejemplo
-ejemploD5 = ([aleft (altura,"bajo"), aleft (peso,"pesado")], aleft (sexo,"mujer")) :: Ejemplo
+ejemploD5 = ([aleft (altura,"bajo"), aleft (peso,"ligero")], aleft (sexo,"mujer")) :: Ejemplo
 ejemplosSexoD = [ejemploD1,ejemploD2,ejemploD3,ejemploD4,ejemploD5] :: [Ejemplo]
 
 ejemploC1 = ([aright (alturaC, 2.0), aright (pesoC, 90.0)], aleft (sexo,"hombre")) :: Ejemplo
-ejemploC2 = ([aright (alturaC, 1.0), aright (pesoC, 70.0)], aleft (sexo,"hombre")) :: Ejemplo
+ejemploC2 = ([aright (alturaC, 1.0), aright (pesoC, 80.0)], aleft (sexo,"hombre")) :: Ejemplo
 ejemploC3 = ([aright (alturaC, 0.0), aright (pesoC, 50.0)], aleft (sexo,"mujer")) :: Ejemplo
 ejemploC4 = ([aright (alturaC, 1.0), aright (pesoC, 60.0)], aleft (sexo,"mujer")) :: Ejemplo
-ejemploC5 = ([aright (alturaC, 0.0), aright (pesoC, 80.0)], aleft (sexo,"mujer")) :: Ejemplo
+ejemploC5 = ([aright (alturaC, 0.0), aright (pesoC, 70.0)], aleft (sexo,"mujer")) :: Ejemplo
 ejemplosSexoC = [ejemploC1,ejemploC2,ejemploC3,ejemploC4,ejemploC5] :: [Ejemplo]
 
 ejemploCART1 = ([aright (alturaC, 2.0), aright (pesoC, 90.0)], aright (sexoC, 0.0)) :: Ejemplo
