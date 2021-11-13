@@ -16,13 +16,11 @@ gini ejemplos =
 giniAtributo :: [Ejemplo] -> Atributo -> Double
 giniAtributo ejemplos atributo =
     giniAtributoUmbral ejemplos (getR atributo) (fromJust $ umbral (getR $ atributo))
-     
+
 giniAtributoUmbral :: [Ejemplo] -> Continuo -> Double -> Double
 giniAtributoUmbral ejemplos atributo umbral =
     let atrib = Right atributo
         n     = lengthDouble ejemplos
         s1    = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) <= umbral ]
-        p1    = lengthDouble s1 / n
         s2    = [ x | x <- ejemplos, (getR $ valorAtributo x atrib) > umbral ]
-        p2    = lengthDouble s2 / n
-    in p1 * (gini s1) + p2 * (gini s2)
+    in foldl (\ac s -> let p = lengthDouble s / n in ac + p * gini s) 0 [s1,s2]

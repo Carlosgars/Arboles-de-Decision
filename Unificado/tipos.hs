@@ -63,20 +63,20 @@ instance Show Arbol where
      show x = showTree x ""
      
 showTree :: Arbol -> ShowS
-showTree (Hoja x) = shows x
+showTree (Hoja x)          = shows x
 showTree (Nodo atrib hijo) = ('<':).shows atrib.(showUmbral atrib ++).("|\n"++).showList [(hijo a,a) | a <- posiblesValores atrib].('>':)
 
 nombre :: Atributo -> String
-nombre (Left atributo) = nombreD atributo
+nombre (Left atributo)  = nombreD atributo
 nombre (Right atributo) = nombreC atributo
 
 showUmbral :: Atributo -> String
-showUmbral (Left atrib) = ""
+showUmbral (Left atrib)  = ""
 showUmbral (Right atrib) =
     let u = umbral atrib
     in if isNothing u then ""
     else " {Umbral: " ++ (show $ fromJust $ u) ++ "}"
 
 posiblesValores :: Atributo -> [String]
-posiblesValores (Left atributo) = posiblesvaloresD atributo
+posiblesValores (Left atributo)  = posiblesvaloresD atributo
 posiblesValores (Right atributo) = ["<=",">"]

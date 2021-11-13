@@ -27,7 +27,8 @@ arbolGenerico crea_hoja discretizador mejorClasificador condicionParada hoja_pad
 creaHijo :: ([Ejemplo] -> ValorAtrib) -> ([Ejemplo] -> Atributo -> Atributo) -> ([Atributo] -> [Ejemplo] -> Atributo) -> (Double -> [Ejemplo]-> (Bool, ValorAtrib)) -> ValorAtrib -> Double -> [Atributo] -> (String -> [Ejemplo]) -> String -> Arbol     
 creaHijo crea_hoja discretizador mejorClasificador condicionParada hoja_padre param_parada atributos evaluarValor valor =
     let ejemplos = evaluarValor valor
-    in arbolGenerico crea_hoja discretizador mejorClasificador condicionParada hoja_padre param_parada atributos ejemplos
+    in arbolGenerico crea_hoja discretizador mejorClasificador
+    condicionParada hoja_padre param_parada atributos ejemplos
 
 arbolC45 = arbolGenerico masComun discretizarGanInfo mejorClasificaGan paradaClasificacion
 arbolCARTclas = arbolGenerico masComun discretizarGini mejorClasificaGini paradaClasificacion

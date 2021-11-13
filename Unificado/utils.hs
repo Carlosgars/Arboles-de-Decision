@@ -61,7 +61,7 @@ valores atributo (e:ejemplos) =
 valorAtributo :: Ejemplo -> Atributo -> ValorAtrib
 valorAtributo ejemplo atributo =
     snd $ head (filter (\x -> fst x == atributo) (fst ejemplo))
-       
+
 evaluarD :: [Ejemplo] -> String -> Discreto -> [Ejemplo]
 evaluarD ejemplos valor atributo =
     let atrib = Left atributo 
@@ -72,10 +72,10 @@ evaluarC ejemplos valor atributo =
     let u = fromJust $ umbral atributo
         atrib = (Right atributo)
     in if valor == "<="
-    then filter (\x -> (getR$valorAtributo x atrib) <= u) ejemplos
-    else if valor == ">"
-    then filter (\x -> (getR$valorAtributo x atrib) > u) ejemplos
-    else []
+       then filter (\x -> (getR$valorAtributo x atrib) <= u) ejemplos
+       else if valor == ">"
+       then filter (\x -> (getR$valorAtributo x atrib) > u) ejemplos
+       else []
 
 evaluar :: [Ejemplo]  -> Atributo -> String -> [Ejemplo]
 evaluar ejemplos atributo valor =

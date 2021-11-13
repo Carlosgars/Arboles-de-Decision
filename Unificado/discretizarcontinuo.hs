@@ -22,32 +22,17 @@ discretizar f operador ejemplos (Right atributo) =
 
 mejorUmbral :: ([Ejemplo] -> Continuo -> Double -> Double) -> (Double -> Double -> Bool) -> Continuo -> [Ejemplo] -> Double
 mejorUmbral f operador atributo ejemplos =
-    let v = ordensindups $ map getR (valores (Right atributo) ejemplos)
-        us =  posiblesParticiones atributo v
+    let v           = ordensindups $ map getR (valores (Right atributo) ejemplos)
+        us          =  posiblesParticiones atributo v
         umbral_inic = head us
-        gan_inic = f ejemplos atributo umbral_inic 
-    in mejorUmbralAux f operador atributo ejemplos (tail us) umbral_inic gan_inic
-
-mejorUmbralAux :: ([Ejemplo] -> Continuo -> Double -> Double) -> (Double -> Double -> Bool) -> Continuo -> [Ejemplo] -> [Double] -> Double -> Double -> Double
-mejorUmbralAux _ _ _ _ [] umbral _ = umbral
-mejorUmbralAux f operador atributo ejemplos (u:us) umbral valor_f =
-    let nuevo_valor_f = f ejemplos atributo umbral
-    in if nuevo_valor_f `operador` valor_f
-    then mejorUmbralAux f operador atributo ejemplos us u nuevo_valor_f
-    else mejorUmbralAux f operador atributo ejemplos us umbral valor_f
+        f_inic      = f ejemplos atributo umbral_inic
+    in fst $ foldl (\ (u, f_u) x ->
+                   let f_x = f ejemplos atributo x
+                   in if f_x `operador` f_u
+                      then (x, f_x)
+                      else (u, f_u) )
+             (head us,f_inic) (tail us)
 
 discretizarGanInfo = discretizar gananciaNormCUmbral (>)
 discretizarECM = discretizar ecmAtributoUmbral (<)
 discretizarGini = discretizar giniAtributoUmbral (<)
-
---- Posible Fold --- 
-mejorUmbral2 :: ([Ejemplo] -> Continuo -> Double -> Double) -> (Double -> Double -> Bool) -> Continuo -> [Ejemplo] -> Double
-mejorUmbral2 f operador atributo ejemplos =
-    let v = ordensindups $ map getR (valores (Right atributo) ejemplos)
-        us =  posiblesParticiones atributo v
-        umbral_inic = head us
-    in foldl (\ac x -> let valor_new = f ejemplos atributo x
-                           valor_old = f ejemplos atributo ac
-              in if valor_new `operador` valor_old
-                 then x
-                 else ac) (head us) (tail us)

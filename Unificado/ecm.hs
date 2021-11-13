@@ -4,16 +4,12 @@ import Tipos
 import Utils
 import Data.Maybe
 
-prediccionHoja :: [Ejemplo] -> ValorAtrib
-prediccionHoja ejemplos =
-    let v = map (getR.valorObjetivo) ejemplos
-    in Right $ media v
-       
+
 ecm :: [Ejemplo] -> Double
 ecm ejemplos =
-    let v = map (getR.valorObjetivo) ejemplos
+    let v          = map (getR.valorObjetivo) ejemplos
         prediccion = media v
-        ecms = map (\ x -> (x-prediccion)^2) v
+        ecms       = map (\ x -> (x-prediccion)^2) v
     in media ecms
 
 ecmAtributo :: [Ejemplo] -> Atributo -> Double
