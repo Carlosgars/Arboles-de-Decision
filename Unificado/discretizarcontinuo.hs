@@ -36,6 +36,3 @@ mejorUmbral f operador atributo ejemplos =
 discretizarGanInfo = discretizar gananciaNormCUmbral (>)
 discretizarECM = discretizar ecmAtributoUmbral (<)
 discretizarGini = discretizar giniAtributoUmbral (<)
-
-devolvermaximo f xs =
-    foldl (\(u,f_u) x-> if (f x)>f_u then (x,f x) else (u,f_u)) (0,0) xs

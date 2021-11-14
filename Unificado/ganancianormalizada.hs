@@ -10,7 +10,7 @@ gananciaInformacionD ::[Ejemplo] -> Discreto -> Double
 gananciaInformacionD [] _ = 0
 gananciaInformacionD ejemplos atributo =
     let val       = posiblesvaloresD atributo
-        ganancia = foldl (\ac x ->
+        ganancia  = foldl (\ac x ->
             let sv = evaluarD ejemplos x atributo
             in ac + (entropia sv) * (lengthDouble sv) / (lengthDouble ejemplos)) 0 val
     in entropia ejemplos - ganancia

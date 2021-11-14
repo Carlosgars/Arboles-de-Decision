@@ -68,3 +68,22 @@ prediccionCombinada (at_val,(Left atOb,x)) arboles =
     fst $ votoMayoritario $ listaPredicciones (at_val,(Left atOb,x)) arboles
 prediccionCombinada (at_val,(Right atOb,x)) arboles =
     Right (media $ map getR $ listaPredicciones (at_val,(Right atOb,x)) arboles)
+
+
+errorRFclas :: [Arbol] -> [Ejemplo] -> Double
+errorRFclas arboles ejemplos =
+    let predicciones      = map (\ x -> prediccionCombinada x arboles) ejemplos
+        correctas         = map valorObjetivo ejemplos  
+        bien_clasificados = zipWith (==) predicciones correctas
+        errores           = lengthDouble $ filter (==False) bien_clasificados
+        n                 = lengthDouble ejemplos
+    in errores / n
+
+errorRFreg :: [Arbol] -> [Ejemplo] -> Double
+errorRFreg arboles ejemplos =
+    let predicciones      = map (\ x -> getR $ prediccionCombinada x arboles) ejemplos
+        correctas         = map (getR.valorObjetivo) ejemplos  
+        diferencias       = zipWith (-) predicciones correctas
+        ecm               = sum $ map (^2) diferencias
+        n                 = lengthDouble ejemplos
+    in ecm / n

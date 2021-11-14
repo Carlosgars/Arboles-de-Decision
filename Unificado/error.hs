@@ -29,3 +29,4 @@ errorRegresionConjunto arbol ejemplos =
         n     = lengthDouble ejemplos
     in error / n
 
+

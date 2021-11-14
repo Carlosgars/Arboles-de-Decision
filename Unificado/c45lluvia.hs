@@ -7,4 +7,4 @@ import DiscretizarContinuo
 import Utils
 import GananciaNormalizada
 
-arbol = c45 0.7 atributos ejemplos
+arbol = c45 0.8 atributos ejemplos

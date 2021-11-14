@@ -60,15 +60,15 @@ unlabeledD = [
           ]
 
 unlabeledtempC = [
-          [(temperaturaC, 28.0)],
+          [(temperaturaC, 29.0)],
           [(temperaturaC, 26.0)],
           [(temperaturaC, 27.0)],
           [(temperaturaC, 18.0)],
           [(temperaturaC, 10.0)],
           [(temperaturaC, 8.0)],
-          [(temperaturaC, 9.0)],
+          [(temperaturaC, 8.0)],
           [(temperaturaC, 17.0)],
-          [(temperaturaC, 10.0)],
+          [(temperaturaC, 8.0)],
           [(temperaturaC, 21.0)],
           [(temperaturaC, 22.0)],
           [(temperaturaC, 20.0)],
