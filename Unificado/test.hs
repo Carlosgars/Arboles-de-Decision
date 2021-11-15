@@ -15,7 +15,7 @@ import DiscretizarContinuo
 
 -- Crear arboles --
 arbolC45sexoD = c45 0.75 atributosSexoD ejemplosSexoD
-arbolC45sexoDC = c45 0.75 atributosSexoDC ejemplosSexoDC
+arbolC45sexoDC = c45 1 atributosSexoDC ejemplosSexoDC
 arbolC45sexoC = c45 0.75 atributosSexoC ejemplosSexoC
 
 arbolC45lluviaDC = c45 0.75 atributosLluviaC45 ejemplosLluviaC45

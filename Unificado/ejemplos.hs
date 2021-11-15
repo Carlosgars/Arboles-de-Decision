@@ -24,10 +24,11 @@ atributosSexoC = [Right alturaC, Right pesoC] :: [Atributo]
 
 ejemploDC1 = ([aleft (altura,"alto"), aright (pesoC, 90.0)], aleft (sexo,"hombre")) :: Ejemplo
 ejemploDC2 = ([aleft (altura,"medio"), aright (pesoC,80.0)], aleft (sexo,"hombre")) :: Ejemplo
+ejemploDC6 = ([aleft (altura,"medio"), aright (pesoC,70.0)], aleft (sexo,"mujer")) :: Ejemplo
 ejemploDC3 = ([aleft (altura,"bajo"), aright (pesoC, 50.0)], aleft (sexo,"mujer")) :: Ejemplo
-ejemploDC4 = ([aleft (altura,"medio"), aright (pesoC, 60.0)], aleft (sexo,"mujer")) :: Ejemplo
-ejemploDC5 = ([aleft (altura,"bajo"), aright (pesoC, 70.0)], aleft (sexo,"mujer")) :: Ejemplo
-ejemplosSexoDC = [ejemploDC1,ejemploDC2,ejemploDC3,ejemploDC4,ejemploDC5] :: [Ejemplo]
+ejemploDC4 = ([aleft (altura,"vaejo"), aright (pesoC, 60.0)], aleft (sexo,"mujer")) :: Ejemplo
+ejemploDC5 = ([aleft (altura,"bajo"), aright (pesoC, 70.0)], aleft (sexo,"hombre")) :: Ejemplo
+ejemplosSexoDC = [ejemploDC1,ejemploDC2,ejemploDC3,ejemploDC4,ejemploDC5,ejemploDC6] :: [Ejemplo]
 
 ejemploD1 = ([aleft (altura,"alto"), aleft (peso, "pesado")], aleft (sexo,"hombre")) :: Ejemplo
 ejemploD2 = ([aleft (altura,"medio"), aleft (peso,"pesado")], aleft (sexo,"hombre")) :: Ejemplo
