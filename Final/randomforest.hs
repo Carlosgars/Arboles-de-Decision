@@ -6,6 +6,7 @@ import System.Random
 import ConstruirModelos
 import Evaluar
 import ECM
+import Error
 
 generadores n i j = map mkStdGen (take n [i,j..])
 
@@ -22,7 +23,6 @@ bootsEjemplos 0 _ _ = []
 bootsEjemplos k ejemplos (i,j) =
     let n = length ejemplos
     in (subListaRandom n i j ejemplos) : bootsEjemplos (k-1) ejemplos (3*i,2*j)
-
 
 bootsAtribs :: Int -> Int -> [Atributo] -> (Int,Int) -> [ [Atributo] ]
 bootsAtribs 0 _ _ _ = []
@@ -45,8 +45,8 @@ construirkArboles :: Int -> [Ejemplo] -> [Atributo] -> Int -> ([Atributo] -> [Ej
 construirkArboles k ejemplos atributos n_atributos modelo =
    let n_e = length ejemplos
        n_a = length atributos
-       k_ejemplos = bootsEjemplos k ejemplos (5,5)
-       k_atrib = bootsAtribs k n_atributos atributos (5,3)
+       k_ejemplos = bootsEjemplos k ejemplos (21,13)
+       k_atrib = bootsAtribs k n_atributos atributos (13,7)
        zip_ej_at = zip k_atrib k_ejemplos
    in map (\ (at,ej) -> modelo at ej) zip_ej_at
 
@@ -87,3 +87,8 @@ errorRFreg arboles ejemplos =
         ecm               = sum $ map (^2) diferencias
         n                 = lengthDouble ejemplos
     in ecm / n
+
+filtrarBosque :: (Arbol -> [Ejemplo] -> Double) -> [Arbol] -> [Ejemplo] -> Double -> [Arbol]
+filtrarBosque f arboles ejemplos umbral =
+       foldl (\ac arbol -> if (f arbol ejemplos) < umbral
+              then arbol:ac else ac) [] arboles

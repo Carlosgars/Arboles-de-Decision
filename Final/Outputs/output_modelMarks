@@ -1,0 +1,37 @@
+*ModelMarks> arbol
+<Right lunch {Umbral: 0.5}|
+[(Right 69.5016835016835,"<="),(<Right parentsed {Umbral: 2.5}|
+[(<Right course {Umbral: 0.5}|
+[(<Right gender {Umbral: 0.5}|
+[(Right 54.51851851851852,"<="),(<Right race {Umbral: 2.5}|
+[(<Right readingscore {Umbral: 8.5}|
+[(Right 45.44444444444444,"<="),(<Right writingscore {Umbral: 5.0}|
+[(Right 45.44444444444444,"<="),(Right 45.44444444444444,">")]>,">")]>,"<="),(<Right readingscore {Umbral: 17.0}|
+[(Right 53.625,"<="),(<Right writingscore {Umbral: 16.0}|
+[(Right 53.625,"<="),(Right 53.625,">")]>,">")]>,">")]>,">")]>,"<="),(Right 60.225806451612904,">")]>,"<="),(Right 63.766666666666666,">")]>,">")]>
+(2.44 secs, 917,868,168 bytes)
+
+*ModelMarks> errorArbolEntrenamiento
+181.1992983418412
+
+*ModelMarks> errorArbolValidacion
+198.50177074328326
+
+*ModelMarks> take 2 bosque
+[<Right gender {Umbral: 0.5}|
+[(<Right race {Umbral: 3.5}|
+[(<Right parentsed {Umbral: 3.5}|
+[(Right 64.25157232704403,"<="),(Right 73.56,">")]>,"<="),(<Right parentsed {Umbral: 2.5}|
+[(Right 79.61111111111111,"<="),(Right 72.04761904761905,">")]>,">")]>,"<="),(<Right race {Umbral: 0.5}|
+[(Right 45.5,"<="),(<Right parentsed {Umbral: 2.5}|
+[(Right 57.1965811965812,"<="),(Right 62.03,">")]>,">")]>,">")]>,
+<Right lunch {Umbral: 0.5}|
+[(Right 72.3177966101695,"<="),(<Right gender {Umbral: 0.5}|
+[(Right 66.05172413793103,"<="),(Right 55.816326530612244,">")]>,">")]>]
+
+*ModelMarks> errorBosqueEntrenamiento
+205.45360070077692
+
+*ModelMarks> errorBosqueValidacion
+206.6371153948943
+*ModelMarks> 

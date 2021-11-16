@@ -34,11 +34,13 @@ arbol = c45 param_parada atributos entrenamiento
 
 -- Random Forest
 
-n_arboles = 100
+n_arboles =  50
 n_atributos = 4
+param_parada_bosque = 0.5 
 
-bosque = (construirkArboles n_arboles entrenamiento atributos n_atributos (c45 param_parada))
+prebosque = (construirkArboles n_arboles entrenamiento atributos n_atributos (c45 param_parada_bosque))
 
+bosque = filtrarBosque errorClasificacionConjunto prebosque entrenamiento 0.5
 
 -- Evaluar error
 
@@ -47,4 +49,3 @@ errorArbolValidacion    = errorClasificacionConjunto arbol validacion
 
 errorRFentrenamiento = errorRFclas bosque entrenamiento
 errorRFvalidacion    = errorRFclas bosque validacion
-

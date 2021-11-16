@@ -27,56 +27,25 @@ atObjetivo = Right mathscore
 
 -- Construir árbol
 
-param_parada = 150
+param_parada = 200
 
 arbol = cart "regresion" param_parada atributos entrenamiento
 
 -- Random Forest
 
-n_arboles   = 50
+n_arboles   = 20
 n_atributos = 3
+param_parada_bosque = 150
 
-bosque = (construirkArboles n_arboles entrenamiento atributos n_atributos (cart "regresion" param_parada))
+prebosque = (construirkArboles n_arboles entrenamiento atributos n_atributos (cart "regresion" param_parada_bosque))
+
+bosque = filtrarBosque errorRegresionConjunto prebosque entrenamiento 400
+
 
 -- Evaluamos los errores
 
 errorArbolEntrenamiento = errorRegresionConjunto arbol entrenamiento
-errorArbolValidacion    = errorRegresionConjunto arbol (take 10 validacion)
+errorArbolValidacion    = errorRegresionConjunto arbol validacion
 
-errorBosqueEtrenamiento = errorRFreg bosque entrenamiento
+errorBosqueEntrenamiento = errorRFreg bosque entrenamiento
 errorBosqueValidacion    = errorRFreg bosque validacion
-
-
--------RUN 1---------
-
---- DATASET 450 -- split en 300
-
------ Arbol: 0.75
------ Error = 0.44
-
------ RF: 20 training atributos 4 (c45 0.75)
------Error 0.29
-
----------------------
-
--------RUN 2---------
-
---- DATASET 450 -- split en 300
-
------ Arbol: 0.75
---- Error:0.42
-
------ RF: 20 training atributos 4 (c45 0.7)
------Error 0.32
-
----------------------
-
--------RUN 3---------
-
---- DATASET 450 -- split en 300
-
------ Arbol: 0.65
---- Error:0.42
-
------ RF: 30 training atributos 3 (c45 0.7)
------Error 0.32

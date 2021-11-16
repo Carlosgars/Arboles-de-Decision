@@ -1,0 +1,30 @@
+OUTPUT modelDrugs.hs
+
+*ModelDrugs> arbol
+<Right na_to_K {Umbral: 14.627}|
+[(<Right age {Umbral: 12.5}|
+[(Left "drugC","<="),(<Left sex|
+[(Left "drugX","F"),(<Left BP|
+[(Left "drugA","HIGH"),(Left "drugX","NORMAL"),(<Left cholesterol|
+[(Left "drugC","HIGH"),(Left "drugX","NORMAL")]>,"LOW")]>,"M")]>,">")]>,"<="),(Left "DrugY",">")]>
+(0.58 secs, 174,843,976 bytes)
+
+*ModelDrugs> length bosque
+22
+(80.97 secs, 20,190,181,128 bytes)
+
+*ModelDrugs> errorRFentrenamiento
+0.13333333333333333
+(42.94 secs, 13,443,429,328 bytes)
+
+*ModelDrugs> errorRFvalidacion
+0.16
+(13.50 secs, 4,502,012,936 bytes)
+
+*ModelDrugs> errorArbolEntrenamiento
+0.17333333333333334
+(4.59 secs, 1,588,145,280 bytes)
+
+*ModelDrugs> errorArbolValidacion
+0.14
+(1.52 secs, 530,908,592 bytes)

@@ -1,0 +1,10 @@
+*EjemploSimple> arbol
+<Left X|
+[(<Right Y {Umbral: 0.5}|
+[(Left "Rojo","<="),(Left "Azul",">")]>,"A"),(Left "Rojo","B")]>
+
+*EjemploSimple> ejemploapredecir
+[(Left X,Left "B"),(Right Y,Right 0.0)]
+
+*EjemploSimple> prediccion
+Left "Rojo"
